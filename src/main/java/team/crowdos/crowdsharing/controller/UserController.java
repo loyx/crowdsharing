@@ -41,8 +41,8 @@ public class UserController {
     @PostMapping(value = "/getUser")
     public void getUser(@NotNull HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String userPassword = SHA.getSHA256StrJava(password);
+        //        String userPassword = SHA.getSHA256StrJava(password);
+        String userPassword = request.getParameter("password");
         int result = userService.getUser(username,userPassword);
         if(result != 0){
             //String userId = Integer.toString(result);
@@ -80,7 +80,8 @@ public class UserController {
         user.setPhonenumber(request.getParameter("phoneNumber"));
         user.setEmail(request.getParameter("email"));
 
-        String userPassword = SHA.getSHA256StrJava(request.getParameter("passWord"));
+//        String userPassword = SHA.getSHA256StrJava(request.getParameter("passWord"));
+        String userPassword = request.getParameter("passWord");
         user.setPassword(userPassword);
         boolean isDup = userService.getUserByName(request.getParameter("userName"));
         if(isDup == true){

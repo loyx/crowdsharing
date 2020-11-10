@@ -26,6 +26,26 @@ $(function () {
 
     $('.form-validate').each(function() {  
         $(this).validate({
+            rules: {
+                passWord: {
+                    required: true,
+                    minlength: 6
+                },
+                repeatPassWord:{
+                    required: true,
+                    equalTo: "#register-password"
+                }
+            },
+            messages: {
+                passWord: {
+                    required: "Please enter your password",
+                    minlength: jQuery.validator.format("Your password must be at least {0} characters long")
+                },
+                repeatPassWord: {
+                    required: "Please repeat your password",
+                    equalTo: "Please enter the same password again"
+                }
+            },
             errorElement: "div",
             errorClass: 'is-invalid',
             validClass: 'is-valid',

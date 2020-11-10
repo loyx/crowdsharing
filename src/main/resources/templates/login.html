@@ -63,7 +63,7 @@
                       <label for="login-password" class="label-material">Password</label>
                       <input id="login-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Login"></input>
+                    <input type="submit" class="btn btn-primary" value="Login" onclick="pwd_encrypt()"/>
                   </form>
                   <a href="#" class="forgot-pass">Forgot Password?</a><br><small>Do not have an account? </small><a href="register" class="signup">Signup</a>
                 </div>
@@ -84,5 +84,15 @@
     <script src="/vendor/chart.js/Chart.min.js"></script>
     <script src="/vendor/jquery-validation/jquery.validate.min.js"></script>
     <script src="/js/front.js"></script>
+
+    <!-- password encrypt-->
+    <script src="/js/sha256.min.js"></script>
+    <script>
+      function pwd_encrypt(){
+        const pwd = document.getElementById('login-password').value;
+        document.getElementById('login-password').value = sha256(pwd);
+        document.forms[0].submit()
+      }
+    </script>
   </body>
 </html>

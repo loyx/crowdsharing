@@ -27,7 +27,7 @@
     <style>
         input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
             -webkit-text-fill-color: #8A8D93 !important;
-            -webkit-box-shadow: 0 0 0px 1000px transparent  inset !important;
+            -webkit-box-shadow: 0 0 0 1000px transparent  inset !important;
             background-color:transparent;
             background-image: none;
              transition: background-color 50000s ease-in-out 0s; //背景色透明  生效时长  过渡效果  启用时延迟的时间
@@ -61,7 +61,7 @@
             <div class="col-lg-6 bg-white">
               <div class="form d-flex align-items-center">
                 <div class="content">
-                  <form method="post" action="http://localhost:8080/user/userRegister" class="text-left form-validate">
+                  <form id="app" method="post" action="http://localhost:8080/user/userRegister" class="text-left form-validate">
                     <div class="form-group-material">
                       <label for="register-username" class="label-material">Username</label>
                       <input id="register-username" type="text" name="userName" required data-msg="Please enter your username" class="input-material">
@@ -72,8 +72,8 @@
                     </div>
                     <div class="form-group-material">
                       <label class="label-material">Gender</label><br />
-                      <input id="register-sex1" type="radio" name="gender" value="male">&nbsp;&nbsp;male&nbsp;&nbsp;</input>
-                      <input id="register-sex2" type="radio" name="gender" value="female">&nbsp;&nbsp;female&nbsp;&nbsp;</input>
+                      <input id="register-sex1" type="radio" name="gender" value="male">  male  
+                      <input id="register-sex2" type="radio" name="gender" value="female">  female  
                     </div>
                     <div class="form-group-material">
                       <label for="register-birthday" class="label-material">Birthday</label>
@@ -89,14 +89,18 @@
                     </div>
                     <div class="form-group-material">
                       <label for="register-password" class="label-material">Password</label>
-                      <input id="register-password" type="password" name="passWord" required data-msg="Please enter your password" class="input-material">
+                      <input id="register-password" type="password" name="passWord" required class="input-material">
+                    </div>
+                    <div class="form-group-material">
+                      <label for="register-password" class="label-material">Confirm Password</label>
+                      <input id="register-repeat-password" type="password" name="repeatPassWord" class="input-material">
                     </div>
                     <div class="form-group terms-conditions text-center">
                       <input id="register-agree" name="registerAgree" type="checkbox" required value="1" data-msg="Your agreement is required" class="checkbox-template">
                       <label for="register-agree">I agree with the terms and policy</label>
                     </div>
                     <div class="form-group text-center">
-                      <input id="register" type="submit" value="Register" class="btn btn-primary">
+                      <input id="register" type="submit" value="Register" class="btn btn-primary" onclick="pwd_encrypt()">
                     </div>
                   </form><small>Already have an account? </small><a href="login" class="signup">Login</a>
                 </div>
@@ -117,5 +121,15 @@
     <script src="/vendor/chart.js/Chart.min.js"></script>
     <script src="/vendor/jquery-validation/jquery.validate.min.js"></script>
     <script src="/js/front.js"></script>
+
+    <!-- password encrypt-->
+    <script src="/js/sha256.min.js"></script>
+    <script>
+      function pwd_encrypt(){
+        const pwd = document.getElementById('register-password').value;
+        document.getElementById('register-password').value = sha256(pwd);
+        document.forms[0].submit()
+      }
+    </script>
   </body>
 </html>

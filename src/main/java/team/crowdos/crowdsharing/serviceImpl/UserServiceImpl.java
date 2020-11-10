@@ -36,11 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean getUserByName(String username) {
         User user = userMapper.getUserByName(username);
-        if(user != null){
-            return true;
-        }else {
-            return false;
-        }
+        return user != null;
     }
 
     @Override
