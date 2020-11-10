@@ -192,95 +192,117 @@
     <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <script type="text/javascript">
 
-        var UsernameInfo = document.getElementById("UsernameInfo");
-        //var RoleInfo = document.getElementById("RoleInfo");
-        var arr=document.cookie.split(";");//获取cookie字符串并分割
-        //遍历匹配
-        for(var i=0; i<arr.length; i++){
-            var a = arr[i].split("=");
-            if(a[0].trim() == "userName"){
-                UsernameInfo.innerHTML = a[1];
-            }else{
-                //RoleInfo.innerHTML = a[1];
-            }
+      var UsernameInfo = document.getElementById("UsernameInfo");
+      //var RoleInfo = document.getElementById("RoleInfo");
+      const arr = document.cookie.split(";");//获取cookie字符串并分割
+      //遍历匹配
+      for(var i=0; i<arr.length; i++){
+        var a = arr[i].split("=");
+        if(a[0].trim() === "userName"){
+          UsernameInfo.innerHTML = a[1];
+        }else{
+          //RoleInfo.innerHTML = a[1];
         }
+      }
 
-	    var mapObj = new AMap.Map('mapContainer1', {
-	    	center:[116.397445,39.909189],
-	    	//center:[108.947032,34.259439],
-	    	zoom:11,
-	    	mapStyle: 'amap://styles/darkblue',  //设置地图的显示样式
-	    });
+      var mapObj = new AMap.Map('mapContainer1', {
+        center:[116.397445,39.909189],
+        //center:[108.947032,34.259439],
+        zoom:11,
+        mapStyle: 'amap://styles/darkblue',  //设置地图的显示样式
+      });
 
-		  AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
-	        //缩放控件，显示Zoom值
-	        mapObj.addControl(new BasicControl.Zoom({
-	            position: 'lt',
-	            showZoomNum: true
-	        }));
-	    });
+      AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+        //缩放控件，显示Zoom值
+        mapObj.addControl(new BasicControl.Zoom({
+          position: 'lt',
+          showZoomNum: true
+        }));
+      });
 
-			//加载鹰眼
-			mapObj.plugin(["AMap.OverView"],function(){
-			    view = new AMap.OverView();
-			    mapObj.addControl(view);
-			});
+      //加载鹰眼
+      mapObj.plugin(["AMap.OverView"],function(){
+        view = new AMap.OverView();
+        mapObj.addControl(view);
+      });
 
-			var heatmap;
-		  mapObj.plugin(["AMap.Heatmap"],function() {      //加载热力图插件
-	        heatmap = new AMap.Heatmap(mapObj, {
-	            radius: 25, //给定半径
-	            opacity: [0, 0.8]
-	        });    //在地图对象叠加热力图
+      var heatmap;
+      mapObj.plugin(["AMap.Heatmap"],function() {      //加载热力图插件
+        heatmap = new AMap.Heatmap(mapObj, {
+          radius: 25, //给定半径
+          opacity: [0, 0.8]
+        });    //在地图对象叠加热力图
 
-	        heatmap.setDataSet({
-	        	data:heatmapData,
-	        	max:100
-	        }); //设置热力图数据集
-	        //具体参数见接口文档
-	    });
+        heatmap.setDataSet({
+          data:heatmapData,
+          max:100
+        }); //设置热力图数据集
+        //具体参数见接口文档
+      });
 
-            var mapObj2 = new AMap.Map('mapContainer2', {
-                center:[108.947024,34.259451],
-                zoom:11,
-                mapStyle: 'amap://styles/macaron',
-            });
+      var mapObj2 = new AMap.Map('mapContainer2', {
+        center:[108.947024,34.259451],
+        zoom:11,
+        mapStyle: 'amap://styles/macaron',
+      });
 
-            AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
-                //缩放控件，显示Zoom值
-                mapObj2.addControl(new BasicControl.Zoom({
-                    position: 'lt',
-                    showZoomNum: true
-                }));
-            });
+      AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+        //缩放控件，显示Zoom值
+        mapObj2.addControl(new BasicControl.Zoom({
+          position: 'lt',
+          showZoomNum: true
+        }));
+      });
 
-	        //加载鹰眼
-			mapObj.plugin(["AMap.OverView"],function(){
-			    view = new AMap.OverView();
-			    mapObj2.addControl(view);
-			});
+      //加载鹰眼
+      mapObj.plugin(["AMap.OverView"],function(){
+        view = new AMap.OverView();
+        mapObj2.addControl(view);
+      });
 
-	        var points =[
-                {"lng":108.947496,"lat":34.266322,"count":100},
-                {"lng":108.983716,"lat":34.258803,"count":110},
-                {"lng":108.921575,"lat":34.252702,"count":1515},
-                {"lng":108.958654,"lat":34.238938,"count":13},
-                {"lng":108.911447,"lat":34.246175,"count":14},
-                {"lng":108.968157,"lat":34.256638,"count":4646}
-	        ];
+      window.setInterval(function (){
+        // 清除marker
+        mapObj2.clearMap()
 
-			for(i=0;i<points.length;i++){
-				addMarker(points[i]);
-			}
+        // 获取新marker
+        let points = [];
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange=function (){
+          if (xmlHttp.readyState===4 && xmlHttp.status === 200){
+            let responseData = JSON.parse(xmlHttp.responseText)
+            for (let i = 0; i < responseData.length; i++){
+              let responseDatum = responseData[i];
+              points.push({"lng": responseDatum.longitude, "lat": responseDatum.latitude, "count":responseDatum.coin})
+            }
+            for(i=0;i<points.length;i++){
+              addMarker(points[i]);
+            }
+          }
+        };
+        xmlHttp.open("GET", "http://localhost:8080/task/getAllUnfinishedTask", true);
+        xmlHttp.send();
+      }, 300_000); // 5分钟获取一次数据
 
-			function addMarker(data){
-				marker = new AMap.Marker({
-                    icon: "img/map-marker-blue.png",
-                    position: [data.lng,data.lat],
-                    offset: new AMap.Pixel(-13, -30)
-                });
-                marker.setMap(mapObj2);
-			}
+      var init_points =[
+        {"lng":108.947496,"lat":34.266322,"count":100},
+        {"lng":108.983716,"lat":34.258803,"count":110},
+        {"lng":108.921575,"lat":34.252702,"count":1515},
+        {"lng":108.958654,"lat":34.238938,"count":13},
+        {"lng":108.911447,"lat":34.246175,"count":14},
+        {"lng":108.968157,"lat":34.256638,"count":4646}
+      ];
+      for (let i = 0; i<init_points.length; i++){
+        addMarker(init_points[i]);
+      }
+
+      function addMarker(data){
+        marker = new AMap.Marker({
+          icon: "img/map-marker-blue.png",
+          position: [data.lng,data.lat],
+          offset: new AMap.Pixel(-13, -30)
+        });
+        marker.setMap(mapObj2);
+      }
     </script>
   </body>
 </html>
