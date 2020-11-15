@@ -20,6 +20,8 @@ public interface UserMapper {
 
     int getDownloadPermission(int userID);
 
+    User getUserById(int userID);
+
     /*
     int deleteByPrimaryKey(Integer userid);
 

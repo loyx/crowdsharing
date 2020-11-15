@@ -1,5 +1,6 @@
 package team.crowdos.crowdsharing.controller;
 
+import org.springframework.web.bind.annotation.Mapping;
 import team.crowdos.crowdsharing.entity.User;
 import team.crowdos.crowdsharing.serviceImpl.UserServiceImpl;
 import team.crowdos.crowdsharing.utils.SHA;
@@ -96,6 +97,29 @@ public class UserController {
             userService.userRegister(user);
             response.sendRedirect("http://localhost:8080/login");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/getUserInfo")
+    public Map<String, Object> getUserInfo(HttpServletRequest request){
+        int userID = -1;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null){
+            for (Cookie c: cookies){
+                if (c.getName().equals("userID")){
+                    userID = Integer.parseInt(c.getValue());
+                }
+            }
+        }
+        Map<String, Object> userInfo = new HashMap<>();
+        User user = userService.getUserInfo(userID);
+        userInfo.put("username", user.getUsername());
+        userInfo.put("realName", user.getRealname());
+        userInfo.put("birthday", user.getBirthday());
+        userInfo.put("phone", user.getPhonenumber());
+        userInfo.put("email", user.getEmail());
+        userInfo.put("level", user.getLevel());
+        return userInfo;
     }
 
 }

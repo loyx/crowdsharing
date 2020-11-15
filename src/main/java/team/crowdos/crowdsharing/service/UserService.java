@@ -16,4 +16,6 @@ public interface UserService {
 
     int getDownloadPermission(int userID);
 
+    User getUserInfo(int userID);
+
 }

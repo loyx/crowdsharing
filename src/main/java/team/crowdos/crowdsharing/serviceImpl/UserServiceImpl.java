@@ -48,4 +48,9 @@ public class UserServiceImpl implements UserService {
     public int getDownloadPermission(int userID) {
         return userMapper.getDownloadPermission(userID);
     }
+
+    @Override
+    public User getUserInfo(int userID){
+        return userMapper.getUserById(userID);
+    }
 }

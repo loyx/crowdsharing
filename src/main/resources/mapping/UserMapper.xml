@@ -42,6 +42,11 @@
     select * from user where userName=#{username}
   </select>
 
+  <!-- 根据用户id获取某个用户 -->
+  <select id="getUserById" parameterType="java.lang.Integer" resultType="team.crowdos.crowdsharing.entity.User">
+    select * from user where userId=#{userID}
+  </select>
+
   <!-- 用户注册 -->
   <!-- 后期需要改动，添加level -->
   <insert id="userRegister" parameterType="team.crowdos.crowdsharing.entity.User">
