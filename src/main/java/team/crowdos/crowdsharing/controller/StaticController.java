@@ -248,4 +248,12 @@ public class StaticController {
         return "multifile";
     }
 
+    /**
+     * 用户信息主页
+     * @return String
+     */
+    @RequestMapping("/userHome.html")
+    public String userHome(){
+        return "userHome";
+    }
 }
