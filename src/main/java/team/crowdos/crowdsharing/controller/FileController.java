@@ -26,6 +26,9 @@ public class FileController {
     @Autowired
     private UserService userService;
 
+    static private final String file_root_path = "E:/4_project/crowd网站/file_test/file_local/";
+//    static private final String file_root_path = "F:/IDEAproject/file_test/file_local/";
+
     /*
      *单文件上传
      */
@@ -40,24 +43,25 @@ public class FileController {
         float size = (float)file.getSize()/(1024*1024);
         System.out.println(fileName + "-->" + size + "MB");
 
-        String path = "F:/IDEAproject/file_test/file_local/" + dataName;
+        String path =  file_root_path + dataName;
         File dest = new File(path + "/" + fileName);
         File dest2 = new File(path + "/" + "describe.txt");
         if (!dest.getParentFile().exists()){//判断文件父目录是否存在
-            dest.getParentFile().mkdirs();
+            boolean result = dest.getParentFile().mkdirs();
+            assert result;
         }
         try {
             file.transferTo(dest); //保存文件
-            dest2.createNewFile();
+
+            boolean result = dest2.createNewFile();
+            assert result;
+
             BufferedWriter out = new BufferedWriter(new FileWriter(dest2));
             out.write(describe);
             out.flush();
             out.close();
             return "{\"status\":\"true\"}";
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return "{\"status\":\"false\"}";
-        } catch (IOException e) {
+        } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
             return "{\"status\":\"false\"}";
         }
@@ -73,7 +77,6 @@ public class FileController {
         if(files.isEmpty()){
             return "false";
         }
-        String path = "F:/IDEAproject/file_test/file_local";
         for (MultipartFile file:files){
             String fileName = file.getOriginalFilename();
             float size = (float)file.getSize()/(1024*1024);
@@ -82,9 +85,10 @@ public class FileController {
             if(file.isEmpty()){
                 return "false";
             }else{
-                File dest = new File(path + "/" + fileName);
+                File dest = new File(file_root_path + "/" + fileName);
                 if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
-                    dest.getParentFile().mkdir();
+                    boolean result = dest.getParentFile().mkdir();
+                    assert result;
                 }
                 try {
                     file.transferTo(dest);
@@ -148,6 +152,7 @@ public class FileController {
                 }
                 //System.out.println("---file download---" + filename);
                 try {
+                    assert bis != null;
                     bis.close();
                     fis.close();
                 } catch (IOException e) {
