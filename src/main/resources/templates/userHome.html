@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="/css/custom.css">
   <!-- Favicon-->
   <link rel="shortcut icon" href="/img/favicon.png">
+  <!--  element custom css-->
+  <link rel="stylesheet" href="/css/customElement.css">
+
   <!-- Tweaks for older IEs--><!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -36,16 +39,6 @@
     }
     .avatar-block{
         margin-top: 10%;
-    }
-    .el-divider {
-        background-color: #343a40;
-        position: relative;
-    }
-    .el-divider__text {
-        position: absolute;
-        background-color: #22252a;
-        padding: 0px 20px;
-        color: rgb(138, 141, 147);
     }
   </style>
 </head>
@@ -150,11 +143,11 @@
             active-text-color="#DB6574">
           <el-menu-item index="1" @click="switch_page(1)">
             <i class="el-icon-user"></i>
-            <span>个人信息</span>
+            <span>user information</span>
           </el-menu-item>
           <el-menu-item index="2" @click="switch_page(2)">
             <i class="el-icon-setting"></i>
-            <span>密码设置</span>
+            <span>password setting</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -169,10 +162,34 @@
             <p>level: {{userInfo.level}}</p>
           </div>
           <el-divider content-position="left">avatar</el-divider>
-          <div> content 1.2</div>
+          <div>
+            <p>Upload a new avatar!</p>
+            <el-upload action="https://localhost:8080/user/userAvatar">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
         </div>
         <div v-else>
-          content 2
+          <el-form ref="pwd_form"
+                   :model="pwd_form"
+                   :rules="rules"
+                   label-width="30%"
+                   status-icon
+          >
+            <el-form-item label="old password" prop="old_pwd">
+              <el-input type="password" v-model="pwd_form.old_pwd" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="new password" prop="new_pwd">
+              <el-input type="password" v-model="pwd_form.new_pwd" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="repeat password" prop="repeat_pwd">
+              <el-input type="password" v-model="pwd_form.repeat_pwd" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="danger">submit</el-button>
+            </el-form-item>
+          </el-form>
         </div>
       </el-main>
     </el-container>
@@ -187,47 +204,13 @@
 <script src="/vendor/jquery-validation/jquery.validate.min.js"></script>
 <script src="/js/front.js"></script>
 
+<!-- loyx 2020/12/1 -->
 <!-- vue -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!-- element 组件库 -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script>
-    const vm = new Vue({
-        el: "#app",
-        data: {
-            active_page: 1,
-            userInfo: {
-                username: "user",
-                realName: "user",
-                birthday: "yy-mm-dd",
-                phone: "12345678",
-                email: "foo@bar.com",
-                level: 0
-            }
-        },
-        mounted: function () {
-            const this_ = this;
-            $.ajax({
-                type: "get",
-                url: "http://localhost:8080/user/getUserInfo",
-                async: true,
-                success: function (res) {
-                    this_.userInfo = res
-                },
-                error: function () {
-                    console.log("获取用户信息失败");
-                }
-            });
-        },
-        methods: {
-            switch_page: function (index) {
-                if (this.active_page === index)
-                    return
-                this.active_page = index
-                // console.log("switch to page " + this.active_page)
-            }
-        }
-    });
-</script>
+<!-- usrHome vue class -->
+<script src="/js/userHome.js"></script>
+
 </body>
 </html>

@@ -122,4 +122,9 @@ public class UserController {
         return userInfo;
     }
 
+    @ResponseBody
+    @RequestMapping("/userAvatar")
+    public void handleUserAvatar(){
+    }
+
 }
