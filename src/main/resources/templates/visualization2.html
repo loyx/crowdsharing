@@ -3,8 +3,80 @@
 <title>CrowdSharing数据可视化</title>
 <link href="/visualization/css/style.css"  rel="stylesheet" type="text/css" media="all" />
 <script src="/visualization/js/echarts.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/mapvgl/dist/mapvgl.min.js"></script>
+<script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.93/dist/mapvgl.min.js"></script>
+<script type="text/javascript">
+    function initialize() {
+        // 1. 创建地图实例
+        var bmapgl = new BMapGL.Map('map_container');
+        var point = new BMapGL.Point(108.953471,34.265701);
+        bmapgl.centerAndZoom(point, 14);
+        bmapgl.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+        bmapgl.setMapStyleV2({
+            styleId: '9e9a27f4d0e5c6d7863eb8725e1e85bb'
+        });
+        bmapgl.setTilt(60);
+        // 2. 创建MapVGL图层管理器
+        var view = new mapvgl.View({
+            map: bmapgl
+        });
+        // 3. 创建可视化图层，并添加到图层管理器中
+        var layer = new mapvgl.HeatmapLayer({
+            size: 600, // 单个点绘制大小
+            max: 40, // 最大阈值
+            height: 80, // 最大高度，默认为0
+            unit: 'm', // 单位，m:米，px: 像素
+            gradient: { // 对应比例渐变色
+                0.25: 'rgba(0, 0, 255, 1)',
+                0.55: 'rgba(0, 255, 0, 1)',
+                0.85: 'rgba(255, 255, 0, 1)',
+                1: 'rgba(255, 0, 0, 1)'
+            }
+        });
+        view.addLayer(layer);
+        // 4. 准备好规范化坐标数据
+        var data = [];
+        for (var i = 0; i < 2000; i++) {
+            var longitude = Math.random()*(109.08831-108.74796) + 108.74796;
+            var latitude = Math.random()*(34.390105-34.143562) + 34.143562;
+            var number = parseInt(Math.random()*20,10)+1;
+            var item = [longitude,latitude,number];
+            data.push({
+                geometry: {
+                    type: 'Point',
+                    coordinates: [item[0], item[1]]
+                },
+                properties: {
+                    count: item[2]
+                }
+            });
+        }
+        // 5. 关联图层与数据，享受震撼的可视化效果
+        layer.setData(data);
+    }
 
+    function loadScript() {
+        var script1 = document.createElement("script");
+        script1.src = "https://api.map.baidu.com/api?v=1.0&type=webgl&ak=vKRbqmmytWCcPk3pXaXZ5wo5gXLaaGZm&callback=initialize";
+        document.body.appendChild(script1);
+    }
 
+    window.onload = loadScript;
+</script>
+<style>
+    .BMap_cpyCtrl {
+        display: none;
+    }
+    .anchorBL {
+        display: none;
+    }
+    #map_container{
+        margin-left: 4%;
+        margin-top: 1%;
+        width: 92%;
+        height: 85%;
+    }
+</style>
 <body>
 <div class="bnt">
   <div class="topbnt_left fl">
@@ -99,7 +171,7 @@
       <div class="mrbox_top">
           <div class="mrbox_top_midd">
               <div class="mrboxtm-mbox"><h2 class="tith2 pt1">监控区域状态图</h2>
-                <div class="amiddboxttop_map" style=""></div>
+                  <div id="map_container"></div>
               </div>
 <!--  map end-->
                 <div class="pmrboxbottom"><h2 class="tith2 pt1">任务类型堆叠柱状统计图</h2>
@@ -426,7 +498,7 @@ option = {
                                     fontSize: 10,
                                     color:'rgba(255,255,255,.7)'
                                   },
-                                    data:['0-6','6-18','18-28','28-55','55以上']
+                                    data:['14-18','18-28','28-38','38-55','55以上']
                                 },
                                 series : [
                          {
@@ -435,10 +507,10 @@ option = {
                              radius : '55%',
                              center: ['50%', '65%'],
                              data:[
-                               {value:335, name:'0-6'},
-                               {value:310, name:'6-18'},
-                               {value:234, name:'18-28'},
-                               {value:135, name:'28-55'},
+                               {value:335, name:'14-18'},
+                               {value:310, name:'18-28'},
+                               {value:234, name:'28-38'},
+                               {value:135, name:'38-55'},
                                {value:158, name:'55以上'}
 
                              ],
