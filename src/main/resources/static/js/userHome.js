@@ -40,6 +40,14 @@ const vm = new Vue({
                 level: 0
             },
             imageUrl: "",
+            info_form:{
+                username: "",
+                realName: "",
+                birthday: "",
+                phone: "",
+                email: "",
+                level: 0
+            },
             pwd_form: {
                 old_pwd: "",
                 new_pwd: "",

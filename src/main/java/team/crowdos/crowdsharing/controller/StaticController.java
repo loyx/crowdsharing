@@ -256,4 +256,28 @@ public class StaticController {
     public String userHome(){
         return "userHome";
     }
+
+
+    /* 任务管理部分 */
+
+    /**
+     * 发布任务
+     * @return html
+     */
+    @RequestMapping("/publishTask.html")
+    public String publishTask(){return "publishTask";}
+
+    /**
+     * 接受任务
+     * @return html
+     */
+    @RequestMapping("/acceptTask.html")
+    public String acceptTask(){return "acceptTask";}
+
+    /**
+     * 管理员操作
+     * @return html
+     */
+    @RequestMapping("/administratorOperation.html")
+    public String administratorOperation(){return "administratorOperation";}
 }
