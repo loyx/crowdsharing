@@ -115,11 +115,48 @@
   </nav>
   <!-- Sidebar Navigation end-->
   <div class="page-content">
+
     <div class="page-header">
       <div class="container-fluid">
         <h2 class="h5 no-margin-bottom">publish task</h2>
       </div>
     </div>
+
+    <!-- Breadcrumb-->
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index">Home</a></li>
+        <li class="breadcrumb-item active">Publish Task        </li>
+      </ul>
+    </div>
+
+    <section class="no-padding-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7 block m-auto">
+            <form id="publish-task" method="post" action="#" class="form-validate text-left">
+              <div class="form-group-material">
+                <label for="publish-task-name" class="label-material">Task Name</label>
+                <input id="publish-task-name" type="text" name="taskName" required data-msg="Please enter task name" class="input-material">
+              </div>
+              <div class="form-group-material">
+                <label for="publish-task-details" class="label-material">Task Details</label>
+                <textarea id="publish-task-details" name="taskDetails" class="form-control"></textarea>
+                <!--          <input id="publish-task-details" name="">-->
+              </div>
+              <div class="form-group-material">
+                <label for="publish-task-coin" class="label-material">Task Coin</label>
+                <input id="publish-task-coin" type="text" name="taskCoin" class="input-material">
+              </div>
+              <div class="form-group text-center">
+                <input id="publish" type="submit" value="Publish" class="btn btn-primary">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="footer__block block no-margin-bottom">
         <div class="container-fluid text-center">
@@ -139,6 +176,5 @@
 <script src="/vendor/jquery-validation/jquery.validate.min.js"></script>
 <script src="/js/charts-home.js"></script>
 <script src="/js/front.js"></script>
-<script src="/js/index.js"></script>
 </body>
 </html>
