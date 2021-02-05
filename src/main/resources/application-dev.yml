@@ -3,11 +3,11 @@ server:
 
 spring:
   datasource:
-#    username: root
+    username: root
 #    password: 130324yhc
-    username: crowdos
-    password: crowdos
-    url: jdbc:mysql://localhost:3306/crowdsharing_db?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+#    username: crowdos
+    password:
+    url: jdbc:mysql://47.96.146.104:3306/zph?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
